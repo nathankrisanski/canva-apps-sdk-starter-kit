@@ -21,7 +21,9 @@ export const useApiConfig = (): UseApiConfigReturn => {
   const [isReady, setIsReady] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState(() => ConfigurationService.getInstance().getStatus());
+  const [status, setStatus] = useState(() =>
+    ConfigurationService.getInstance().getStatus(),
+  );
 
   const configService = ConfigurationService.getInstance();
 
@@ -43,7 +45,10 @@ export const useApiConfig = (): UseApiConfigReturn => {
       await configService.initializeFromEnv();
       updateStatus();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Environment variables AGENCY_CLIENT_ID and AGENCY_CLIENT_SECRET must be set";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Environment variables AGENCY_CLIENT_ID and AGENCY_CLIENT_SECRET must be set";
       setError(errorMessage);
       setIsReady(false);
     } finally {

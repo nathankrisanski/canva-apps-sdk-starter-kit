@@ -45,7 +45,9 @@ class AuthenticationService {
    */
   async getAccessToken(): Promise<string> {
     if (!this.credentials) {
-      throw new Error("Authentication credentials not configured. Call configure() first.");
+      throw new Error(
+        "Authentication credentials not configured. Call configure() first.",
+      );
     }
 
     // If we have a valid token, return it
@@ -60,7 +62,7 @@ class AuthenticationService {
 
     // Start a new authentication request
     this.authPromise = this.authenticateWithAPI();
-    
+
     try {
       const token = await this.authPromise;
       this.authPromise = null;
@@ -78,10 +80,10 @@ class AuthenticationService {
     if (!this.accessToken || !this.tokenExpiry) {
       return false;
     }
-    
+
     // Add 5 minute buffer before expiry
     const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
-    return Date.now() < (this.tokenExpiry - bufferTime);
+    return Date.now() < this.tokenExpiry - bufferTime;
   }
 
   /**
@@ -93,7 +95,7 @@ class AuthenticationService {
     }
 
     try {
-      console.log("doing auth",this.baseUrl,this.credentials)
+      console.log("doing auth", this.baseUrl, this.credentials);
       const response = await fetch(`${this.baseUrl}/auth/token`, {
         method: "POST",
         headers: {
@@ -108,26 +110,30 @@ class AuthenticationService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Authentication failed: ${response.status} ${errorText}`);
+        throw new Error(
+          `Authentication failed: ${response.status} ${errorText}`,
+        );
       }
 
       const tokenData: TokenResponse = await response.json();
       console.log(tokenData);
-      
+
       if (!tokenData.access_token) {
-        throw new Error("No access token received from authentication endpoint");
+        throw new Error(
+          "No access token received from authentication endpoint",
+        );
       }
 
       // Store the token and calculate expiry
       this.accessToken = tokenData.access_token;
-      
+
       if (tokenData.expires_in) {
-        this.tokenExpiry = Date.now() + (tokenData.expires_in * 1000);
+        this.tokenExpiry = Date.now() + tokenData.expires_in * 1000;
       } else {
         // Default to 1 hour if no expiry provided
-        this.tokenExpiry = Date.now() + (60 * 60 * 1000);
+        this.tokenExpiry = Date.now() + 60 * 60 * 1000;
       }
-      console.log("Returning access_token",this.accessToken)
+      console.log("Returning access_token", this.accessToken);
       return this.accessToken;
     } catch (error) {
       this.accessToken = null;

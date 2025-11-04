@@ -27,30 +27,36 @@ export const ProtectedApp: React.FC = () => {
     <div className={styles.scrollContainer}>
       <Rows spacing="2u">
         {/* Header with user info and logout */}
-        <Box
-          padding="2u"
-          background="neutralLow"
-          borderRadius="standard"
-        >
+        <Box padding="2u" background="neutralLow" borderRadius="standard">
           <Rows spacing="1u">
             <Text variant="bold">
-              {intl.formatMessage({
-                id: "app.welcome_user",
-                defaultMessage: "Welcome, {name}",
-                description: "Welcome message with user name",
-              }, { name: user?.displayName || "User" })}
+              {intl.formatMessage(
+                {
+                  
+                  defaultMessage: "Welcome, {name}",
+                  description: "Welcome message with user name",
+                },
+                { name: user?.displayName || "User" },
+              )}
             </Text>
-            <Box display="flex" justifyContent="spaceBetween" alignItems="center">
+            <Box
+              display="flex"
+              justifyContent="spaceBetween"
+              alignItems="center"
+            >
               <Text variant="regular" size="small">
-                {intl.formatMessage({
-                  id: "app.signed_in_as",
-                  defaultMessage: "Signed in as: {email}",
-                  description: "Text showing current user email",
-                }, { email: user?.mail || user?.userPrincipalName || "Unknown" })}
+                {intl.formatMessage(
+                  {
+                    
+                    defaultMessage: "Signed in as: {email}",
+                    description: "Text showing current user email",
+                  },
+                  { email: user?.mail || user?.userPrincipalName || "Unknown" },
+                )}
               </Text>
               <Button variant="tertiary" onClick={logout}>
                 {intl.formatMessage({
-                  id: "app.logout",
+                  
                   defaultMessage: "Logout",
                   description: "Logout button text",
                 })}
@@ -67,21 +73,21 @@ export const ProtectedApp: React.FC = () => {
             <TabList align="stretch">
               <Tab id="agents">
                 {intl.formatMessage({
-                  id: "app.agents_tab",
+                  
                   defaultMessage: "Agents",
                   description: "Agents tab label",
                 })}
               </Tab>
               <Tab id="listings">
                 {intl.formatMessage({
-                  id: "app.listings_tab",
+                  
                   defaultMessage: "Listings",
                   description: "Listings tab label",
                 })}
               </Tab>
               <Tab id="market-data">
                 {intl.formatMessage({
-                  id: "app.market_data_tab",
+                  
                   defaultMessage: "Market Data",
                   description: "Market Data tab label",
                 })}

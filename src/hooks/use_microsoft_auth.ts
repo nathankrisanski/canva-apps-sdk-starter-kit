@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import MicrosoftAuthService, { type MicrosoftAuthState, type UserProfile } from "../services/microsoft_auth_service";
+import MicrosoftAuthService, {
+  type MicrosoftAuthState,
+  type UserProfile,
+} from "../services/microsoft_auth_service";
 
 interface UseMicrosoftAuthReturn {
   isAuthenticated: boolean;
@@ -31,7 +34,7 @@ export function useMicrosoftAuth(): UseMicrosoftAuthReturn {
         loading: newState.loading,
         error: newState.error,
         hasUser: !!newState.user,
-        userDisplayName: newState.user?.displayName
+        userDisplayName: newState.user?.displayName,
       });
       setState(newState);
     });

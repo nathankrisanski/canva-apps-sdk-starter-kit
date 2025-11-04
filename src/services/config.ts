@@ -44,7 +44,9 @@ class ConfigurationService {
       this.isInitialized = true;
     } catch (error) {
       this.isInitialized = false;
-      throw new Error(`Failed to initialize API services: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `Failed to initialize API services: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   }
 
@@ -56,9 +58,14 @@ class ConfigurationService {
     const client_id = process.env.AGENCY_CLIENT_ID;
     const client_secret = process.env.AGENCY_CLIENT_SECRET;
 
-    if (!client_id || !client_secret || client_id === "undefined" || client_secret === "undefined") {
+    if (
+      !client_id ||
+      !client_secret ||
+      client_id === "undefined" ||
+      client_secret === "undefined"
+    ) {
       throw new Error(
-        "Environment variables AGENCY_CLIENT_ID and AGENCY_CLIENT_SECRET must be set"
+        "Environment variables AGENCY_CLIENT_ID and AGENCY_CLIENT_SECRET must be set",
       );
     }
 
@@ -67,7 +74,6 @@ class ConfigurationService {
       client_secret,
     });
   }
-
 
   /**
    * Check if the services are initialized and ready

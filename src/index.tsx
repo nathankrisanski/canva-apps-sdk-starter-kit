@@ -1,21 +1,29 @@
 import { AppUiProvider } from "@canva/app-ui-kit";
+import { prepareDesignEditor } from "@canva/intents/design";
 import { createRoot } from "react-dom/client";
 import { App } from "./app";
 import "@canva/app-ui-kit/styles.css";
-import { AppI18nProvider } from "@canva/app-i18n-kit";
 
-const root = createRoot(document.getElementById("root") as Element);
-function render() {
+const render = async () => {
+  const rootElement = document.getElementById("root");
+  const rootElementExists = rootElement instanceof Element;
+
+  if (!rootElementExists) {
+    throw new Error("Unable to find element with id of 'root'");
+  }
+
+  const root = createRoot(rootElement);
+
   root.render(
-    <AppI18nProvider>
-      <AppUiProvider>
-        <App />
-      </AppUiProvider>
-    </AppI18nProvider>,
+    <AppUiProvider>
+      <App />
+    </AppUiProvider>,
   );
-}
+};
 
-render();
+prepareDesignEditor({
+  render,
+});
 
 if (module.hot) {
   module.hot.accept("./app", render);

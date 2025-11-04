@@ -47,7 +47,7 @@ class ApiClient {
    */
   private async makeAuthenticatedRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     try {
       // Get a valid access token
@@ -70,11 +70,11 @@ class ApiClient {
       if (status === 401) {
         // Clear the token and try once more
         this.authService.clearToken();
-        
+
         try {
           const newAccessToken = await this.authService.getAccessToken();
           headers.set("Authorization", `Bearer ${newAccessToken}`);
-          
+
           const retryResponse = await fetch(`${this.baseUrl}${endpoint}`, {
             ...options,
             headers,
@@ -132,19 +132,27 @@ class ApiClient {
    */
   async searchAgents(query: string): Promise<ApiResponse<AgentListResponse>> {
     const encodedQuery = encodeURIComponent(query);
-    return this.makeAuthenticatedRequest<AgentListResponse>(`/agent/list?search=${encodedQuery}`, {
-      method: "GET",
-    });
+    return this.makeAuthenticatedRequest<AgentListResponse>(
+      `/agent/list?search=${encodedQuery}`,
+      {
+        method: "GET",
+      },
+    );
   }
 
   /**
    * Get agent profile by email
    */
-  async getAgentProfile(email: string): Promise<ApiResponse<AgentProfileResponse>> {
+  async getAgentProfile(
+    email: string,
+  ): Promise<ApiResponse<AgentProfileResponse>> {
     const encodedEmail = encodeURIComponent(email);
-    return this.makeAuthenticatedRequest<AgentProfileResponse>(`/agent/public-profile?email=${encodedEmail}`, {
-      method: "GET",
-    });
+    return this.makeAuthenticatedRequest<AgentProfileResponse>(
+      `/agent/public-profile?email=${encodedEmail}`,
+      {
+        method: "GET",
+      },
+    );
   }
 
   /**
@@ -160,7 +168,9 @@ class ApiClient {
   /**
    * Search for market data
    */
-  async searchMarketData(query: string): Promise<ApiResponse<SearchApiResponse>> {
+  async searchMarketData(
+    query: string,
+  ): Promise<ApiResponse<SearchApiResponse>> {
     return this.makeAuthenticatedRequest<SearchApiResponse>("/market-data", {
       method: "POST",
       body: JSON.stringify({ query }),
@@ -170,14 +180,22 @@ class ApiClient {
   /**
    * Generic search method for any endpoint
    */
-  async search(endpoint: string, query: string): Promise<ApiResponse<SearchApiResponse>> {
+  async search(
+    endpoint: string,
+    query: string,
+  ): Promise<ApiResponse<SearchApiResponse>> {
     // Ensure endpoint starts with /
-    const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-    
-    return this.makeAuthenticatedRequest<SearchApiResponse>(normalizedEndpoint, {
-      method: "POST",
-      body: JSON.stringify({ query }),
-    });
+    const normalizedEndpoint = endpoint.startsWith("/")
+      ? endpoint
+      : `/${endpoint}`;
+
+    return this.makeAuthenticatedRequest<SearchApiResponse>(
+      normalizedEndpoint,
+      {
+        method: "POST",
+        body: JSON.stringify({ query }),
+      },
+    );
   }
 
   /**
@@ -185,8 +203,10 @@ class ApiClient {
    */
   async getDetails(endpoint: string, itemId: string): Promise<ApiResponse> {
     // Ensure endpoint starts with /
-    const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-    
+    const normalizedEndpoint = endpoint.startsWith("/")
+      ? endpoint
+      : `/${endpoint}`;
+
     return this.makeAuthenticatedRequest(`${normalizedEndpoint}/${itemId}`, {
       method: "GET",
     });
@@ -198,7 +218,7 @@ class ApiClient {
   async customRequest<T>(
     endpoint: string,
     method = "GET",
-    body?: Record<string, unknown>
+    body?: Record<string, unknown>,
   ): Promise<ApiResponse<T>> {
     const options: RequestInit = {
       method,
@@ -235,4 +255,9 @@ class ApiClient {
 }
 
 export default ApiClient;
-export type { ApiResponse, SearchApiResponse, AgentListResponse, AgentProfileResponse };
+export type {
+  ApiResponse,
+  SearchApiResponse,
+  AgentListResponse,
+  AgentProfileResponse,
+};
